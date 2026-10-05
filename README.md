@@ -1,2 +1,1 @@
-# mla_finX
-Time Series Prediction for Equity Return Forecasting
+# Time Series Forecasting for Equities' Return 
