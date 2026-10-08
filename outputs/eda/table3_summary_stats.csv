@@ -1,0 +1,13 @@
+Statistic,Value
+Trading days (final),"1,435"
+Period,2021-01-04 to 2026-09-21
+Columns (final),59
+Days lost in merge / cleaning,0
+Blank VIX weekdays (market holidays),54
+Index daily return: mean,0.056%
+Index daily return: std,1.042%
+Index daily return: min / max,-5.97% / 9.52%
+Share of up days,53.7%
+Mean / std of the 50 stock returns (avg across stocks),0.076% / 1.938%
+VIX: mean (min to max),19.2 (11.9 to 52.3)
+Days with VIX >= 20,34.0%

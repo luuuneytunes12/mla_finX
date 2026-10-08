@@ -5,7 +5,7 @@ sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).res
 import numpy as np, pandas as pd
 import xgboost as xgb
 import config as C
-from fincare_common import make_window, walk_forward, load_master
+from finx_common import make_window, walk_forward, load_master
 
 NAME = "xgboost"
 
@@ -39,5 +39,5 @@ def save_importance_chart(model, out=C.OUT_DIR / "figures"):
 if __name__ == "__main__":
     walk_forward(fit, predict, NAME, df=load_master())
     # chart from a model trained on the last fold's training data
-    from fincare_common import fold_split, FOLDS
+    from finx_common import fold_split, FOLDS
     save_importance_chart(fit(fold_split(load_master(), FOLDS[-1])[0]))

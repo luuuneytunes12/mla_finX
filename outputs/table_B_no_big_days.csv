@@ -1,0 +1,4 @@
+Model,RMSE all days,RMSE without 5 biggest days,Rank change
+Naive (return = 0),0.9661,0.8282,0
+Moving average (5-day),1.0727,0.9234,0
+ARIMA,0.9639,0.8254,0

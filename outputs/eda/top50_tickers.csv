@@ -1,0 +1,51 @@
+Rank,Symbol,Shortname,Sector,Weight (%)
+1,AAPL,Apple Inc.,Technology,6.92
+2,NVDA,NVIDIA Corporation,Technology,5.94
+3,MSFT,Microsoft Corporation,Technology,5.84
+4,AMZN,"Amazon.com, Inc.",Consumer Cyclical,4.26
+5,GOOGL,Alphabet Inc.,Communication Services,4.23
+7,META,"Meta Platforms, Inc.",Communication Services,2.66
+8,TSLA,"Tesla, Inc.",Consumer Cyclical,2.43
+9,AVGO,Broadcom Inc.,Technology,1.86
+10,BRK-B,Berkshire Hathaway Inc. New,Financial Services,1.76
+11,WMT,Walmart Inc.,Consumer Defensive,1.33
+12,LLY,Eli Lilly and Company,Healthcare,1.24
+13,JPM,JP Morgan Chase & Co.,Financial Services,1.2
+14,V,Visa Inc.,Financial Services,1.11
+15,MA,Mastercard Incorporated,Financial Services,0.87
+16,ORCL,Oracle Corporation,Technology,0.85
+17,XOM,ExxonMobil Holdings Corporation,Energy,0.84
+18,UNH,UnitedHealth Group Incorporated,Healthcare,0.83
+19,COST,Costco Wholesale Corporation,Consumer Defensive,0.76
+20,PG,Procter & Gamble Company (The),Consumer Defensive,0.71
+21,HD,"Home Depot, Inc. (The)",Consumer Cyclical,0.7
+22,NFLX,"Netflix, Inc.",Communication Services,0.7
+23,JNJ,Johnson & Johnson,Healthcare,0.63
+24,BAC,Bank of America Corporation,Financial Services,0.61
+25,CRM,"Salesforce, Inc.",Technology,0.59
+26,ABBV,AbbVie Inc.,Healthcare,0.56
+27,KO,Coca-Cola Company (The),Consumer Defensive,0.48
+28,TMUS,"T-Mobile US, Inc.",Communication Services,0.46
+29,CVX,Chevron Corporation,Energy,0.46
+30,MRK,"Merck & Company, Inc.",Healthcare,0.45
+31,WFC,Wells Fargo & Company,Financial Services,0.42
+32,CSCO,"Cisco Systems, Inc.",Technology,0.42
+33,ACN,Accenture plc,Technology,0.41
+34,NOW,"ServiceNow, Inc.",Technology,0.41
+35,AXP,American Express Company,Financial Services,0.38
+36,MCD,McDonald's Corporation,Consumer Cyclical,0.38
+37,PEP,"Pepsico, Inc.",Consumer Defensive,0.38
+38,BX,Blackstone Inc.,Financial Services,0.37
+39,IBM,International Business Machines,Technology,0.37
+40,DIS,Walt Disney Company (The),Communication Services,0.36
+41,LIN,Linde plc,Basic Materials,0.36
+42,TMO,Thermo Fisher Scientific Inc,Healthcare,0.36
+43,MS,Morgan Stanley,Financial Services,0.36
+44,ABT,Abbott Laboratories,Healthcare,0.36
+45,ADBE,Adobe Inc.,Technology,0.35
+46,AMD,"Advanced Micro Devices, Inc.",Technology,0.35
+47,PM,Philip Morris International Inc,Consumer Defensive,0.35
+48,ISRG,"Intuitive Surgical, Inc.",Healthcare,0.34
+49,PLTR,Palantir Technologies Inc.,Technology,0.33
+50,GE,GE Aerospace,Industrials,0.33
+51,INTU,Intuit Inc.,Technology,0.32

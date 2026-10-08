@@ -1,0 +1,4 @@
+Model,RMSE calm,Direction calm,RMSE stressed,Direction stressed
+Naive (return = 0),0.7299,,1.6436,
+Moving average (5-day),0.7916,50.7194,1.8609,47.619
+ARIMA,0.7315,52.518,1.6333,61.1111

@@ -3,14 +3,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
-RAW_DIR = DATA_DIR / "raw"            # Yahoo downloads (not in git)
-OUT_DIR = ROOT / "outputs"
-MASTER_PATH = DATA_DIR / "master_v1.csv"
-TOP50_PATH = DATA_DIR / "top50_tickers.csv"
+RAW_DIR = DATA_DIR / "raw"        # as downloaded from Yahoo, never edited. Everyone reads from here.
+SILVER_DIR = DATA_DIR / "silver"  # cleaned: returns + indicators for every trading day (no target yet)
+GOLD_DIR = DATA_DIR / "gold"      # final, frozen model table
+OUT_DIR = ROOT / "outputs"        # results: outputs/<model files>, outputs/eda/, outputs/baselines/
+RAW_PATH = RAW_DIR / "yahoo_ohlcv.csv"            # index + VIX + 59 stocks, all OHLCV fields (2-row header)
+SILVER_PATH = SILVER_DIR / "features.csv"         # 58 inputs, 2021-01-04 to 2026-09-22
+TOP50_PATH = SILVER_DIR / "top50_tickers.csv"
+MASTER_PATH = GOLD_DIR / "master.csv"             # 58 inputs + target, 2021-01-04 to 2026-09-21
 
 # ---- Data period ----
-START_DATE = "2021-01-01"
-END_DATE = "2026-09-23"          # exclusive: last day is 2026-09-22
+START_DATE = "2021-01-04"        # first row of master (Overview: 2021-01-04 to 2026-09-21)
+DOWNLOAD_START = "2020-09-01"    # extra history so RSI/MACD/Bollinger are warmed up by START_DATE (trimmed after)
+END_DATE = "2026-09-23"          # exclusive: last downloaded day is 2026-09-22
+LAST_ROW_DATE = "2026-09-21"     # last master row (its target is the 2026-09-22 return)
 INDEX_TICKER, VIX_TICKER = "^GSPC", "^VIX"
 TOP_N = 50
 SHARE_CLASS_DUPES = [("GOOGL", "GOOG")]   # count Alphabet once
@@ -48,5 +54,5 @@ VAL_FRACTION = 0.10   # last 10% of training period = validation slice (early st
 SEED = 42
 TARGET = "target_next_ret"
 
-# ---- Frozen-master checks (update after the first real build) ----
+# ---- Frozen-master checks ----
 EXPECTED_N_FEATURES = 58

@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config as C
 import baselines as B
-from fincare_common import load_master, walk_forward
+from finx_common import load_master, walk_forward
 import make_results
 
 # midterm numbers: RMSE %, MAE %, Direction %
@@ -17,7 +17,7 @@ MIDTERM = {"Naive (return = 0)": (0.966, 0.659, None), "Moving average (5-day)":
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--master", default=None)
+    ap.add_argument("--master", default=None, help="default: data/gold/master.csv")
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     df = load_master(a.master)
@@ -27,9 +27,6 @@ def main():
         walk_forward(fit, pred, name, df=df, out_dir=out)
     tabs = make_results.main(out)
     t = tabs["results_table.csv"].set_index("Model")
-    if "synthetic" in str(a.master):
-        print("\nFAKE DATA: midterm comparison skipped (only plumbing is tested).")
-        return
     bad = []
     print("\nMidterm check (RMSE/MAE tolerance 0.01, Direction tolerance 1.5 points):")
     for m, (r, mae, d) in MIDTERM.items():

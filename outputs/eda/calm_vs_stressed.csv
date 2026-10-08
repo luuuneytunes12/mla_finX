@@ -1,0 +1,3 @@
+,Days,Std of daily return (%),Days with |move| > 2%
+Calm (VIX < 20),947,0.688,6
+Stressed (VIX >= 20),488,1.483,73

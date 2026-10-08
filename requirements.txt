@@ -1,4 +1,4 @@
-pandas>=2.0
+pandas>=2.0,<3          # statsmodels 0.14 breaks on pandas 3
 numpy>=1.24
 yfinance>=0.2.40
 statsmodels>=0.14

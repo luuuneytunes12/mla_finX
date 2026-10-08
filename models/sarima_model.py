@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).resolve().parents[1] / "src")]
 import numpy as np, pandas as pd
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from fincare_common import walk_forward, load_master
+from finx_common import walk_forward, load_master
 
 NAME = "sarima"
 warnings.filterwarnings("ignore")

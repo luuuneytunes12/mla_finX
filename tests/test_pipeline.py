@@ -1,4 +1,4 @@
-"""Tests on FAKE data. They check the plumbing (no look-ahead, folds, shapes), not real accuracy."""
+"""Tests on the REAL committed data (data/raw). Offline; nothing is written into data/ or outputs/."""
 import sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
@@ -6,19 +6,70 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 import numpy as np, pandas as pd, pytest
 import config as C
 import build_master as BM
-import fincare_common as FC
+import finx_common as FC
 
 
 @pytest.fixture(scope="module")
-def master():
-    df, top = BM.build(BM.synthetic_raw())
-    BM.run_checks(df, top)
-    return df
+def raw():
+    return BM.load_raw()
+
+
+@pytest.fixture(scope="module")
+def built(raw):
+    silver, top = BM.build_silver(raw)
+    gold = BM.build_gold(silver)
+    BM.run_checks(gold, top, real=True)
+    return silver, gold, top
+
+
+@pytest.fixture(scope="module")
+def master(built):
+    return built[1]
 
 
 def test_shape(master):
     assert master.shape[1] == 59 and not master.isna().any().any()
-    assert master.index[0] >= pd.Timestamp("2021-02-05")     # MACD warm-up
+    assert len(FC.feature_cols(master)) == 58
+    assert master.index[0] == pd.Timestamp(C.START_DATE)     # warm-up rows are trimmed
+    assert master.index[-1] == pd.Timestamp(C.LAST_ROW_DATE)
+
+
+def test_committed_files_equal_rebuild(built):
+    silver, gold, _ = built
+    pd.testing.assert_frame_equal(pd.read_csv(C.MASTER_PATH, index_col="Date", parse_dates=True), gold,
+                                  check_exact=False, rtol=1e-12, atol=1e-15, check_freq=False)
+    pd.testing.assert_frame_equal(pd.read_csv(C.SILVER_PATH, index_col="Date", parse_dates=True), silver,
+                                  check_exact=False, rtol=1e-12, atol=1e-15, check_freq=False)
+
+
+def test_sha256_matches():
+    import hashlib
+    want = C.MASTER_PATH.with_suffix(".sha256").read_text().split()[0]
+    assert hashlib.sha256(C.MASTER_PATH.read_bytes()).hexdigest() == want
+    assert len(FC.load_master()) == len(pd.read_csv(C.MASTER_PATH))
+
+
+def test_period_ends(built):
+    silver, gold, _ = built
+    assert silver.index[-1] == pd.Timestamp("2026-09-22")
+    assert gold.index[-1] == pd.Timestamp("2026-09-21")
+
+
+def test_top50_list(built):
+    top = built[2]
+    assert len(top) == 50
+    assert top == [t for t in list(C.TICKER_WEIGHTS)[:51] if t != "GOOG"]
+    assert pd.read_csv(C.TOP50_PATH)["Symbol"].tolist() == top
+
+
+def test_no_holidays_in_index(master):
+    for d in ["2026-05-25", "2026-09-07"]:
+        assert pd.Timestamp(d) not in master.index
+
+
+def test_fold_sizes(master):
+    sizes = [len(FC.fold_split(master, f)[1]) for f in FC.FOLDS]
+    assert sizes == [252, 250, 180] and sum(sizes) == 682
 
 
 def test_target_is_tomorrow(master):
@@ -38,9 +89,9 @@ def test_window_shapes_and_no_leak(master):
 def test_folds_do_not_overlap(master):
     for f in FC.FOLDS:
         tr, te = FC.fold_split(master, f)
-        assert tr.index.max() < te.index.min() and len(te) > 100 or f[0] == "2026"
+        assert tr.index.max() < te.index.min() and len(te) >= 180
     tr, va = FC.val_split(master.iloc[:1000])
-    assert len(va) == 100 and tr.index.max() < va.index.min()
+    assert len(tr) == 900 and len(va) == 100 and tr.index.max() < va.index.min()
 
 
 def test_walk_forward_end_to_end(master, tmp_path):

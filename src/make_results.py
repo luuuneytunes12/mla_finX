@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np, pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config as C
-from fincare_common import score
+from finx_common import score
 
 ORDER = [("naive", "Naive (return = 0)", "Baseline"), ("ma5", "Moving average (5-day)", "Baseline"),
          ("arima", "ARIMA", "Baseline"), ("sarima", "SARIMA", "Traditional ML"),

@@ -1,0 +1,4 @@
+Model,RMSE 2024,Direction 2024,RMSE 2025,Direction 2025,RMSE 2026,Direction 2026
+Naive (return = 0),0.7993,,1.1809,,0.8399,
+Moving average (5-day),0.8892,52.381,1.3257,50.4,0.9008,46.6667
+ARIMA,0.796,56.746,1.179,58.0,0.8382,45.0

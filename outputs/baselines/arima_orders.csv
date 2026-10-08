@@ -1,0 +1,4 @@
+test_year,train_days,order,train_AIC,LjungBox_p_lag10
+2024,753,"ARIMA(0, 0, 0)",-4639.7,0.574
+2025,1005,"ARIMA(0, 0, 0)",-6323.7,0.377
+2026,1255,"ARIMA(0, 0, 3)",-7828.6,0.942

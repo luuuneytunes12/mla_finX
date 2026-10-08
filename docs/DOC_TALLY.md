@@ -1,11 +1,11 @@
-# Where each Claude Doc rule lives in code
+# Where each rule of `docs/1. Overview.pdf` lives in code
 
-| Claude Doc rule | Code |
+| Overview rule | Code |
 |---|---|
 | 58 inputs, target = next-day return | `src/build_master.py::build`, `config.py::TARGET` |
-| 5 data checks | `src/build_master.py::run_checks` |
+| 7 data checks | `src/build_master.py::run_checks` |
 | Top 50 by Dec-2024 weight, Alphabet once | `config.py::TICKER_WEIGHTS`, `pick_top50` |
-| 3 expanding folds, pooled scoring | `config.py::FOLDS`, `fincare_common.walk_forward`, `make_results` |
+| 3 expanding folds, pooled scoring | `config.py::FOLDS`, `finx_common.walk_forward`, `make_results` |
 | Window = 5 days (290 flat / 5×58) | `make_window`, `make_window_3d` |
 | 10% validation slice | `val_split`, `config.py::VAL_FRACTION` |
 | Naive / MA(5) / ARIMA AIC search | `src/baselines.py` |
