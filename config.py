@@ -41,7 +41,7 @@ TICKER_WEIGHTS = {
 FOLDS = [  # (name, first test day, last test day)
     ("2024", "2024-01-01", "2024-12-31"),
     ("2025", "2025-01-01", "2025-12-31"),
-    ("2026", "2026-01-01", "2026-09-30"),
+    ("2026", "2026-01-01", "2026-09-21"),
 ]
 WINDOW = 5            # last 5 trading days as model input
 VAL_FRACTION = 0.10   # last 10% of training period = validation slice (early stopping)

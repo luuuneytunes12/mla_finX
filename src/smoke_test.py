@@ -10,7 +10,9 @@ import baselines as B
 from fincare_common import load_master, walk_forward
 import make_results
 
-MIDTERM = {"Naive": 0.966, "MA(5)": 1.073, "ARIMA": 0.964}
+# midterm numbers: RMSE %, MAE %, Direction %
+MIDTERM = {"Naive (return = 0)": (0.966, 0.659, None), "Moving average (5-day)": (1.073, 0.729, 50.1),
+           "ARIMA": (0.964, 0.655, 54.3)}
 
 
 def main():
@@ -28,11 +30,18 @@ def main():
     if "synthetic" in str(a.master):
         print("\nFAKE DATA: midterm comparison skipped (only plumbing is tested).")
         return
-    print("\nMidterm check (RMSE in %, tolerance 0.01):")
-    for m, v in MIDTERM.items():
-        got = t.loc[m, "RMSE"]
-        print(f"  {m:8s} midterm {v:.3f}  now {got:.3f}  {'OK' if abs(got - v) <= 0.01 else 'DIFFERENT -> look for a bug'}")
-    assert (t["Train time (s) per fold, mean"] >= 0).all() and (t["Latency (ms/day)"] > 0).all(), "timer broken"
+    bad = []
+    print("\nMidterm check (RMSE/MAE tolerance 0.01, Direction tolerance 1.5 points):")
+    for m, (r, mae, d) in MIDTERM.items():
+        ok = abs(t.loc[m, "RMSE (%)"] - r) <= 0.01 and abs(t.loc[m, "MAE (%)"] - mae) <= 0.01 and \
+             (d is None or abs(t.loc[m, "Direction (%)"] - d) <= 1.5)
+        print(f"  {m:24s} RMSE {t.loc[m,'RMSE (%)']:.3f} (midterm {r})  MAE {t.loc[m,'MAE (%)']:.3f} ({mae})  "
+              f"Dir {t.loc[m,'Direction (%)']:.1f} ({d})  {'OK' if ok else 'DIFFERENT'}")
+        if not ok: bad.append(m)
+    assert t.loc["ARIMA", "Train time per fold (s)"] > 0 and (t["Inference per day (ms)"].dropna() > 0).all(), "timer broken"
+    if bad:
+        raise SystemExit(f"SMOKE TEST FAILED for {bad}: fix the shared code before anyone trains a model")
+    print("SMOKE TEST PASSED")
 
 
 if __name__ == "__main__":

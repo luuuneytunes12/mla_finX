@@ -48,4 +48,29 @@ def test_walk_forward_end_to_end(master, tmp_path):
     for n, f, p in [("naive", B.naive_fit, B.naive_predict), ("ma5", B.ma_fit, B.ma_predict)]:
         FC.walk_forward(f, p, n, df=master, out_dir=tmp_path, verbose=False)
     t = make_results.main(tmp_path)["results_table.csv"].set_index("Model")
-    assert t.loc["Naive", "Skill vs naive"] == 0 and (tmp_path / "table_A_by_fold.csv").exists()
+    assert t.loc["Naive (return = 0)", "Skill vs naive (%)"] == 0 and (tmp_path / "table_A_by_fold.csv").exists()
+
+
+def test_3d_window_matches_shifted_frames(master):
+    A, _ = FC.make_window_3d(master)
+    X, _ = FC.make_window(master)
+    feats = FC.feature_cols(master)
+    i = 25
+    t = X.index[i]
+    pos = master.index.get_loc(t)
+    expected = master[feats].iloc[pos - 4: pos + 1].values        # oldest day first, today last
+    assert np.allclose(A[i], expected)
+
+
+def test_arima_row_t_forecasts_next_day():
+    import baselines as B
+    rng = np.random.default_rng(1)
+    r = np.zeros(1500)
+    for i in range(1, 1500):
+        r[i] = 0.6 * r[i - 1] + rng.normal(0, 0.01)           # strong AR(1): tomorrow depends on today
+    idx = pd.bdate_range("2021-01-04", periods=1500)
+    df = pd.DataFrame({"ret_index": r, C.TARGET: np.r_[r[1:], np.nan], "VIX": 15.0}, index=idx).iloc[:-1]
+    train, test = df.iloc[:1000], df.iloc[1000:1200]
+    m = B.arima_fit(train, max_p=1, max_q=0)
+    p = B.arima_predict(m, df, test.index)
+    assert np.corrcoef(p, test[C.TARGET])[0, 1] > 0.5

@@ -7,12 +7,30 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config as C
 
 FOLDS = C.FOLDS
+LATENCY_SAMPLES = 10
 LAG_NAMES = None
 
 
 def load_master(path=None):
-    df = pd.read_csv(path or C.MASTER_PATH, index_col="Date", parse_dates=True)
-    return df
+    path = Path(path or C.MASTER_PATH)
+    sha = path.with_suffix(".sha256")
+    if sha.exists():   # frozen file: stop if anyone changed it
+        import hashlib
+        if hashlib.sha256(path.read_bytes()).hexdigest() != sha.read_text().split()[0]:
+            raise RuntimeError(f"{path.name} changed after it was frozen. Restore it from git.")
+    return pd.read_csv(path, index_col="Date", parse_dates=True)
+
+
+def hardware():
+    import platform, os
+    gpu = "none"
+    try:
+        import subprocess
+        gpu = subprocess.run(["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"],
+                             capture_output=True, text=True, timeout=5).stdout.strip() or "none"
+    except Exception:
+        pass
+    return {"cpu": platform.processor() or platform.machine(), "cores": os.cpu_count(), "gpu": gpu}
 
 
 def feature_cols(df):
@@ -32,7 +50,7 @@ def make_window_3d(df, n=C.WINDOW):
     """Array (rows, n, 58) for LSTM, oldest day first."""
     X, y = make_window(df, n)
     f = len(feature_cols(df))
-    arr = X.values.reshape(len(X), f, n)[:, :, ::-1].transpose(0, 2, 1)
+    arr = X.values.reshape(len(X), n, f)[:, ::-1, :]   # columns are lag-major; flip so oldest day is first
     return arr, y
 
 
@@ -68,7 +86,7 @@ def walk_forward(fit, predict, name, df=None, out_dir=None, verbose=True):
     df = df if df is not None else load_master()
     out = Path(out_dir or C.OUT_DIR)
     out.mkdir(parents=True, exist_ok=True)
-    preds, timing = [], {"train_s": {}, "latency_ms_per_day": {}}
+    preds, timing = [], {"train_s": {}, "latency_ms_per_day": {}, "hardware": hardware()}
     for fold in FOLDS:
         train, test = fold_split(df, fold)
         if len(test) == 0:
@@ -76,15 +94,22 @@ def walk_forward(fit, predict, name, df=None, out_dir=None, verbose=True):
         t0 = time.perf_counter()
         model = fit(train)
         timing["train_s"][fold[0]] = time.perf_counter() - t0
-        t0 = time.perf_counter()
-        p = predict(model, df, test.index)
-        timing["latency_ms_per_day"][fold[0]] = (time.perf_counter() - t0) * 1000 / len(test)
+        p = predict(model, df, test.index)          # all test days (used for scoring)
+        # Latency = time for ONE next-day prediction, using only data up to that day.
+        # Median over LATENCY_SAMPLES evenly spaced test days.
+        days = test.index[np.linspace(0, len(test) - 1, LATENCY_SAMPLES).astype(int)]
+        times = []
+        for d in days:
+            t0 = time.perf_counter()
+            predict(model, df.loc[:d], pd.DatetimeIndex([d]))
+            times.append((time.perf_counter() - t0) * 1000)
+        timing["latency_ms_per_day"][fold[0]] = float(np.median(times))
         p = pd.Series(np.asarray(p, dtype=float), index=test.index)
         preds.append(pd.DataFrame({"fold": fold[0], "actual": test[C.TARGET], "pred": p,
                                    "VIX": test["VIX"]}))
         if verbose:
             print(f"[{name}] fold {fold[0]}: train {len(train)} days, test {len(test)} days, "
-                  f"train {timing['train_s'][fold[0]]:.1f}s, {timing['latency_ms_per_day'][fold[0]]:.3f} ms/day")
+                  f"train {timing['train_s'][fold[0]]:.1f}s, {timing['latency_ms_per_day'][fold[0]]:.3f} ms for one prediction")
     P = pd.concat(preds)
     P.to_csv(out / f"preds_{name}.csv")
     (out / f"timing_{name}.json").write_text(json.dumps(timing, indent=2))

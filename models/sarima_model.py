@@ -1,7 +1,7 @@
 """SARIMA reference (reads ret_index only). Weekly cycle 5, p,q in 0-2, P,Q in 0-1, d=D=0, lowest AIC."""
 import sys, itertools, warnings
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).resolve().parents[1] / "src")]
 import numpy as np, pandas as pd
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fincare_common import walk_forward, load_master
@@ -26,7 +26,7 @@ def fit(train):
 def predict(model, full, test_index):
     hist = full["ret_index"].loc[: test_index[-1]]
     applied = model["fit"].apply(hist.values)
-    p = applied.predict(start=model["n_train"], end=len(hist) - 1)
+    p = applied.predict(start=model["n_train"] + 1, end=len(hist))   # row t = forecast of day t+1
     return pd.Series(p, index=hist.index[model["n_train"]:]).reindex(test_index)
 
 

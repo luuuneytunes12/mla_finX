@@ -34,8 +34,8 @@ def arima_fit(train, max_p=3, max_q=3):
 
 
 def arima_predict(m, full, idx):
-    """One-step-ahead forecasts through the test period, parameters fixed (Kalman filter)."""
+    """Row t gets the forecast of ret_index[t+1] made with data up to day t (parameters fixed)."""
     hist = full["ret_index"].loc[: idx[-1]]
     applied = m["fit"].apply(hist.values)
-    pred = applied.predict(start=m["n_train"], end=len(hist) - 1)
+    pred = applied.predict(start=m["n_train"] + 1, end=len(hist))   # positions n_train+1 .. len(hist)
     return pd.Series(pred, index=hist.index[m["n_train"]:]).reindex(idx)

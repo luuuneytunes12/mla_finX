@@ -106,7 +106,7 @@ def build(raw):
     return df, top
 
 
-def run_checks(df, top):
+def run_checks(df, top, real=False, top50_file=None):
     feats = [c for c in df.columns if c != C.TARGET]
     assert df.shape[1] == C.EXPECTED_N_FEATURES + 1, f"expected 59 cols, got {df.shape[1]}"
     assert not df.isna().any().any(), "blank cells found"
@@ -114,7 +114,12 @@ def run_checks(df, top):
     assert np.allclose(df[C.TARGET].iloc[:-1].values, df["ret_index"].shift(-1).iloc[:-1].values), \
         "target[t] != ret_index[t+1]"
     assert [c[:-4] for c in feats if c.endswith("_ret") and c != "ret_index"] == top, "stock cols != top50 list"
+    if top50_file is not None:
+        assert pd.read_csv(top50_file)["Symbol"].tolist() == top, "stock cols != top50_tickers.csv"
     r = df["ret_index"] * 100
+    if real:   # check 5: summary stats close to the Doc (mean 0.056%, sd 1.04%, ~54% up days)
+        assert 0.0 < r.mean() < 0.12 and 0.9 < r.std() < 1.2 and 51 < (r > 0).mean() * 100 < 57, \
+            "summary stats far from the Doc: check the download"
     print(f"CHECKS PASSED. Shape {df.shape}; {df.index.min().date()} to {df.index.max().date()}")
     print(f"ret_index mean {r.mean():.3f}%  sd {r.std():.3f}%  up days {(r > 0).mean()*100:.1f}%  "
           f"VIX>= {C.VIX_STRESS}: {(df['VIX'] >= C.VIX_STRESS).mean()*100:.1f}%")
@@ -127,13 +132,20 @@ def main():
     a = ap.parse_args()
     raw = synthetic_raw() if a.synthetic else download_raw()
     df, top = build(raw)
-    run_checks(df, top)
+    run_checks(df, top, real=not a.synthetic)
     out = Path(a.outdir) if a.outdir else (C.DATA_DIR / "synthetic" if a.synthetic else C.DATA_DIR)
     out.mkdir(parents=True, exist_ok=True)
-    df.to_csv(out / "master_v1.csv")
+    mf = out / "master_v1.csv"
+    if mf.exists():
+        mf.chmod(0o644)
+    df.to_csv(mf)
     pd.DataFrame({"Rank": range(1, len(top) + 1), "Symbol": top,
                   "Weight (%)": [round(C.TICKER_WEIGHTS[t] * 100, 2) for t in top]}
                  ).to_csv(out / "top50_tickers.csv", index=False)
+    run_checks(df, top, real=not a.synthetic, top50_file=out / "top50_tickers.csv")   # check 4 against the saved file
+    import hashlib
+    (out / "master_v1.sha256").write_text(hashlib.sha256(mf.read_bytes()).hexdigest() + f"  rows={len(df)}\n")
+    mf.chmod(0o444)    # read-only: frozen
     print("Saved", out / "master_v1.csv", "(FAKE DATA)" if a.synthetic else "(frozen: do not edit)")
 
 

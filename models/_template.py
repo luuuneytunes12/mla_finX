@@ -1,7 +1,7 @@
 """Copy this file to models/<yourmodel>_model.py and fill in fit() and predict()."""
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).resolve().parents[1] / "src")]
 import numpy as np, pandas as pd
 import config as C
 from fincare_common import make_window, val_split, walk_forward, load_master
@@ -11,7 +11,7 @@ NAME = "template"          # must be one of: xgboost, dnn, lstm, sarima, chronos
 
 def fit(train):
     X, y = make_window(train)
-    Xtr, ytr = X.iloc[: int(len(X) * 0.9)], y.iloc[: int(len(X) * 0.9)]
+    Xtr, ytr = X.iloc[: int(len(X) * (1 - C.VAL_FRACTION))], y.iloc[: int(len(X) * (1 - C.VAL_FRACTION))]
     raise NotImplementedError("train your model on (Xtr, ytr); validate on the last 10%")
 
 

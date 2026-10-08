@@ -1,7 +1,7 @@
 """XGBoost regressor (worked example of the model interface)."""
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).resolve().parents[1] / "src")]
 import numpy as np, pandas as pd
 import xgboost as xgb
 import config as C
@@ -25,5 +25,19 @@ def predict(model, full, test_index):
     return pd.Series(model.predict(X.loc[test_index]), index=test_index)
 
 
+def save_importance_chart(model, out=C.OUT_DIR / "figures"):
+    import matplotlib; matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    out.mkdir(parents=True, exist_ok=True)
+    names = make_window(load_master())[0].columns
+    imp = pd.Series(model.feature_importances_, index=names).nlargest(15)[::-1]
+    ax = imp.plot.barh(figsize=(7, 5), color="#0f2d6b")
+    ax.set_title("XGBoost: 15 most-used inputs (last fold)", loc="left", fontweight="bold")
+    plt.tight_layout(); plt.savefig(out / "xgboost_feature_importance.png", dpi=200); plt.close()
+
+
 if __name__ == "__main__":
     walk_forward(fit, predict, NAME, df=load_master())
+    # chart from a model trained on the last fold's training data
+    from fincare_common import fold_split, FOLDS
+    save_importance_chart(fit(fold_split(load_master(), FOLDS[-1])[0]))
