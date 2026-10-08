@@ -18,7 +18,10 @@ def load_master(path=None):
         import hashlib
         if hashlib.sha256(path.read_bytes()).hexdigest() != sha.read_text().split()[0]:
             raise RuntimeError(f"{path.name} changed after it was frozen. Restore it from git.")
-    return pd.read_csv(path, index_col="Date", parse_dates=True)
+    df = pd.read_csv(path, index_col="Date", parse_dates=True)
+    if sha.exists() and path == Path(C.MASTER_PATH) and len(df) != C.EXPECTED_N_ROWS:
+        raise RuntimeError(f"{path.name} has {len(df)} rows, config.EXPECTED_N_ROWS is {C.EXPECTED_N_ROWS}.")
+    return df
 
 
 def hardware():

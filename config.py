@@ -56,3 +56,4 @@ TARGET = "target_next_ret"
 
 # ---- Frozen-master checks ----
 EXPECTED_N_FEATURES = 58
+EXPECTED_N_ROWS = 1435               # rows in the frozen master; the checksum is in data/gold/master.sha256
