@@ -50,9 +50,3 @@ TARGET = "target_next_ret"
 
 # ---- Frozen-master checks (update after the first real build) ----
 EXPECTED_N_FEATURES = 58
-
-# ---- Ablation: do VIX and technical indicators help? (src/ablation.py) ----
-GROUP_VIX = ["VIX", "VIX_chg"]
-GROUP_TECH = ["RSI_14", "MACD_diff", "BB_pctB"]
-GROUP_IDXVOL = ["vol_chg", "hl_range"]
-ABLATION_SEEDS = [42, 43, 44]

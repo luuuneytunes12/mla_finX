@@ -74,12 +74,3 @@ def test_arima_row_t_forecasts_next_day():
     m = B.arima_fit(train, max_p=1, max_q=0)
     p = B.arima_predict(m, df, test.index)
     assert np.corrcoef(p, test[C.TARGET])[0, 1] > 0.5
-
-
-def test_ablation_column_sets(master):
-    import ablation
-    sets = ablation.column_sets(master)
-    n = [len(v) for v in sets.values()]
-    assert n == [51, 53, 54, 56, 58]
-    X, _ = FC.make_window(master, cols=sets["A. Returns only (index + 50 stocks)"])
-    assert X.shape[1] == 51 * 5

@@ -37,10 +37,10 @@ def feature_cols(df):
     return [c for c in df.columns if c != C.TARGET]
 
 
-def make_window(df, n=C.WINDOW, cols=None):
+def make_window(df, n=C.WINDOW):
     """Flat table: last n days of every feature -> shape (rows, n*58). Row t uses days t-n+1..t.
     Returns (X, y) aligned on the same index. Rows without a full window are dropped."""
-    feats = df[cols or feature_cols(df)]       # cols=None -> all 58 inputs
+    feats = df[feature_cols(df)]
     parts = {f"{c}_lag{k}": feats[c].shift(k) for k in range(n) for c in feats.columns}
     X = pd.DataFrame(parts, index=df.index).dropna()
     return X, df.loc[X.index, C.TARGET]
