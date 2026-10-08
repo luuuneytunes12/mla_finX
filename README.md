@@ -15,6 +15,7 @@ The full plan is in the Claude Doc (tabs 1–6). This repo is the code that foll
 | `src/fincare_common.py` | Shared code: windows, folds, validation slice, scoring, timing |
 | `src/baselines.py` | Naive, Moving Average (5), ARIMA |
 | `src/smoke_test.py` | Runs the 3 baselines through the shared code (matches midterm? timers work?) |
+| `src/ablation.py` | Do VIX / technical indicators help? Same XGBoost, only the input columns change |
 | `src/make_results.py` | Collects every model's predictions into the results tables |
 | `models/` | One file per model. Copy `_template.py`. `xgboost_model.py` is a worked example |
 | `notebooks/` | `01_eda.ipynb`, `02_smoke_test.ipynb`. Old midterm notebooks are in `archive_midterm/` |
@@ -29,6 +30,7 @@ python src/build_master.py          # 1. download + build + 5 checks -> data/mas
 python -m pytest -q tests           # 2. plumbing tests (fake data, 2 seconds)
 python src/smoke_test.py            # 3. Naive/MA/ARIMA; RMSE must match midterm (0.966 / 1.073 / 0.964)
 python src/make_results.py          # 4. results tables in outputs/
+python src/ablation.py              # 5. (after step 3) do VIX + indicators help? -> outputs/ablation_table.csv
 ```
 After step 3 passes, commit `data/master_v1.csv`, tell the team, and they start training.
 
