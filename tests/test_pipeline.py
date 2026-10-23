@@ -125,3 +125,19 @@ def test_arima_row_t_forecasts_next_day():
     m = B.arima_fit(train, max_p=1, max_q=0)
     p = B.arima_predict(m, df, test.index)
     assert np.corrcoef(p, test[C.TARGET])[0, 1] > 0.5
+
+
+def test_sarima_row_t_forecasts_next_day():
+    sys.path.insert(0, str(ROOT / "models"))
+    import sarima_model as S
+    rng = np.random.default_rng(2)
+    r = np.zeros(1500)
+    for i in range(5, 1500):
+        r[i] = 0.6 * r[i - 5] + rng.normal(0, 0.01)           # weekly cycle: tomorrow depends on 5 days before it
+    idx = pd.bdate_range("2021-01-04", periods=1500)
+    df = pd.DataFrame({"ret_index": r, C.TARGET: np.r_[r[1:], np.nan], "VIX": 15.0}, index=idx).iloc[:-1]
+    train, test = df.iloc[:1000], df.iloc[1000:1200]
+    m = S.fit(train, max_p=0, max_q=0, max_P=1, max_Q=0)
+    assert m["seasonal_order"] == (1, 0, 0, 5)
+    p = S.predict(m, df, test.index)
+    assert not p.isna().any() and np.corrcoef(p, test[C.TARGET])[0, 1] > 0.5

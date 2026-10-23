@@ -12,7 +12,7 @@ The full plan is `docs/1. Overview.pdf`. This repo is the code that follows that
 | `data/raw/` | Yahoo download, saved as-is (`yahoo_ohlcv.csv` + EDA csvs). **Committed on purpose. Everyone reads it, nobody edits it.** |
 | `data/silver/` | Cleaned inputs for every trading day (`features.csv`) and the 50 stocks used (`top50_tickers.csv`) |
 | `data/gold/` | `master.csv`: the frozen table, 59 columns (58 inputs X + 1 target Y), 2021-01-04 to 2026-09-21, plus `master.sha256`. **Never edit.** Models read only this file |
-| `notebooks/` | `01_eda`, `02_smoke_test`, `03_baselines`. Old midterm notebooks are in `archive_midterm/` |
+| `notebooks/` | `01_eda`, `02_smoke_test`, `03_baselines`, plus one `model_<name>` notebook per model (`model_sarima`). Old midterm notebooks are in `archive_midterm/` |
 | `docs/` | `1. Overview.pdf` (the plan) and `DOC_TALLY.md` (which plan rule lives in which code) |
 | `outputs/` | Predictions, timings, results tables. Notebook figures go to `outputs/eda/` and `outputs/baselines/` |
 | `src/build_master.py` | raw -> silver -> gold, runs 7 checks, freezes the master table |

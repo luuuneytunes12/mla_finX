@@ -25,4 +25,4 @@ Rules (from docs/1. Overview.pdf):
 5. SARIMA and Chronos-Bolt read `ret_index` only.
 
 Files here: `_template.py` (copy this), `xgboost_model.py` (worked example),
-`sarima_model.py` (reference for Hong Rong).
+`sarima_model.py` (SARIMA, Hong Rong; run and explained in `notebooks/model_sarima.ipynb`).

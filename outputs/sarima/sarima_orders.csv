@@ -1,0 +1,4 @@
+test_year,train_days,SARIMA order,SARIMA AIC,best seasonal,best seasonal AIC,ARIMA order,ARIMA AIC,ΔAIC vs ARIMA,LjungBox_p_lag5,LjungBox_p_lag10,fits skipped (no convergence)
+2024,753,"SARIMA(0,0,0)(0,0,0,5)",-4639.7,"SARIMA(0,0,0)(1,0,0,5)",-4637.7,"ARIMA(0, 0, 0)",-4639.7,-0.0,0.78,0.574,1
+2025,1005,"SARIMA(0,0,0)(0,0,0,5)",-6323.7,"SARIMA(0,0,0)(0,0,1,5)",-6322.0,"ARIMA(0, 0, 0)",-6323.7,-0.0,0.584,0.377,0
+2026,1255,"SARIMA(0,0,0)(0,0,0,5)",-7827.7,"SARIMA(0,0,0)(1,0,0,5)",-7825.8,"ARIMA(0, 0, 3)",-7828.6,0.9,0.156,0.383,1
