@@ -11,5 +11,6 @@
 | Naive / MA(5) / ARIMA AIC search | `src/baselines.py` |
 | XGBoost settings | `models/xgboost_model.py` |
 | SARIMA settings, AIC vs ARIMA | `models/sarima_model.py`, `notebooks/model_sarima.ipynb` |
+| DNN settings | `models/dnn_model.py` |
 | Train time + latency for every model | `walk_forward` timing json |
 | Calm vs stressed (VIX 20), Table A, Table B | `src/make_results.py` |
