@@ -3,4 +3,5 @@ Naive (return = 0),Baseline,0.9661,0.6578,,0.0,0.0,0.0422
 Moving average (5-day),Baseline,1.0727,0.729,50.1466,-11.0279,0.0,0.1349
 ARIMA,Baseline,0.9639,0.6547,54.1056,0.2278,1.4628,2.5325
 SARIMA,Traditional ML,0.9636,0.6541,56.0117,0.2596,10.8637,5.5383
+DNN,Deep learning,1.0237,0.7315,52.346,-5.9593,7.1478,33.2765
 Always up (direction benchmark),Benchmark,,,56.0117,,,
