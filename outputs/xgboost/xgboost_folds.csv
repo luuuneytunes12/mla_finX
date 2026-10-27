@@ -1,0 +1,4 @@
+test_year,train_days,window_rows,fit_rows,validation_rows,n_features,best_iteration,trees_kept,hit_500_cap,train_s
+2024,753,749,674,75,290,4,5,False,0.1
+2025,1005,1001,900,101,290,8,9,False,0.09
+2026,1255,1251,1125,126,290,3,4,False,0.09

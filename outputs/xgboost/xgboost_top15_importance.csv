@@ -1,0 +1,16 @@
+feature,label,importance
+PM_ret_lag4,PM_ret (day t-4),0.0227
+TMUS_ret_lag2,TMUS_ret (day t-2),0.0179
+WFC_ret_lag1,WFC_ret (day t-1),0.0173
+MCD_ret_lag2,MCD_ret (day t-2),0.017
+PG_ret_lag2,PG_ret (day t-2),0.017
+VIX_lag0,VIX (day t),0.0158
+AVGO_ret_lag3,AVGO_ret (day t-3),0.0157
+MS_ret_lag3,MS_ret (day t-3),0.0155
+RSI_14_lag2,RSI_14 (day t-2),0.0151
+CSCO_ret_lag3,CSCO_ret (day t-3),0.0149
+ret_index_lag4,ret_index (day t-4),0.0149
+AXP_ret_lag3,AXP_ret (day t-3),0.0146
+NOW_ret_lag3,NOW_ret (day t-3),0.0144
+hl_range_lag0,hl_range (day t),0.0141
+PEP_ret_lag2,PEP_ret (day t-2),0.014
