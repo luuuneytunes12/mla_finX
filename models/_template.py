@@ -6,7 +6,7 @@ import numpy as np, pandas as pd
 import config as C
 from finx_common import make_window, val_split, walk_forward, load_master
 
-NAME = "template"          # must be one of: xgboost, dnn, lstm, sarima, chronos_asis, chronos_ft
+NAME = "template"          # must be one of: xgboost, dnn, lstm, sarima, chronos_asis, chronos2, chronos_ft
 
 
 def fit(train):

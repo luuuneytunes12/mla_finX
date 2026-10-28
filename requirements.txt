@@ -9,4 +9,5 @@ pytest>=7.0
 nbformat>=5.9
 # Heavy models (install only if you own them):
 # tensorflow>=2.15          # DNN, LSTM
-# autogluon.timeseries      # Chronos-Bolt
+# chronos-forecasting>=2.0  # Chronos-Bolt as-is (brings torch)
+# autogluon.timeseries      # Chronos-Bolt fine-tuned

@@ -12,5 +12,7 @@
 | XGBoost settings | `models/xgboost_model.py` |
 | SARIMA settings, AIC vs ARIMA | `models/sarima_model.py`, `notebooks/model_sarima.ipynb` |
 | DNN settings | `models/dnn_model.py` |
+| Chronos-Bolt as-is (ret_index only, full history, median) | `models/chronos_model.py`, `notebooks/model_chronos.ipynb` |
+| Chronos-2 as-is (ret_index only, full history, median) | `models/chronos2_model.py`, `notebooks/model_chronos2.ipynb` |
 | Train time + latency for every model | `walk_forward` timing json |
 | Calm vs stressed (VIX 20), Table A, Table B | `src/make_results.py` |

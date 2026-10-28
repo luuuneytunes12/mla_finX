@@ -11,6 +11,7 @@ ORDER = [("naive", "Naive (return = 0)", "Baseline"), ("ma5", "Moving average (5
          ("arima", "ARIMA", "Baseline"), ("sarima", "SARIMA", "Traditional ML"),
          ("xgboost", "XGBoost", "Traditional ML"), ("dnn", "DNN", "Deep learning"),
          ("lstm", "LSTM", "Deep learning"), ("chronos_asis", "Chronos-Bolt (as-is)", "LLM / foundation"),
+         ("chronos2", "Chronos-2 (as-is)", "LLM / foundation"),
          ("chronos_ft", "Chronos-Bolt (fine-tuned)", "LLM / foundation")]
 INFO = {k: (lab, tier) for k, lab, tier in ORDER}
 
