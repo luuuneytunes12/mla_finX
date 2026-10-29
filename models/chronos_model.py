@@ -1,4 +1,4 @@
-"""Chronos-Bolt, used as-is (Owen). Reads ret_index only. A pretrained forecaster (amazon/chronos-bolt-base): no
+"""Chronos-Bolt, used as-is (Owen). Reads ret_index only. A pretrained forecaster (amazon/chronos-bolt-small): no
 training on our data, no scaling (the model scales each history itself). For test day t it reads every ret_index value
 up to and including day t and forecasts day t+1; the point forecast is the median (0.5 quantile). fit() only loads the
 weights, so "train time" is load time. Bolt outputs quantiles directly (no sampling), so forecasts are deterministic."""
@@ -10,7 +10,7 @@ import config as C
 from finx_common import walk_forward, load_master
 
 NAME = "chronos_asis"
-MODEL_ID = "amazon/chronos-bolt-base"    # 205M parameters, the largest Bolt; "amazon/chronos-bolt-small" (48M) is lighter
+MODEL_ID = "amazon/chronos-bolt-small"   # 48M parameters; same model as the fine-tuned run (chronos_ft), so only fine-tuning differs
 CONTEXT = 2048                           # Bolt's max history; master has 1,435 rows, so the full history always fits
 DEVICE = "cpu"                           # CPU, like every other FinX model, so the timings are comparable
 QUANTILES = [0.1, 0.5, 0.9]

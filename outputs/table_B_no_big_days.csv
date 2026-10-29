@@ -1,9 +1,9 @@
 Model,RMSE all days,RMSE without 5 biggest days,Rank change
-Naive (return = 0),0.9661,0.8282,-1
+Naive (return = 0),0.9661,0.8282,0
 Moving average (5-day),1.0727,0.9234,1
 ARIMA,0.9639,0.8254,1
 SARIMA,0.9636,0.8251,1
 XGBoost,0.9624,0.8259,-2
 DNN,1.0237,0.9274,-1
-Chronos-Bolt (as-is),0.9679,0.8289,0
-Chronos-2 (as-is),0.9663,0.8271,1
+Chronos-Bolt (as-is),0.9676,0.8296,0
+Chronos-Bolt (fine-tuned),0.9683,0.8305,0

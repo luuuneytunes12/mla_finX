@@ -1,4 +1,4 @@
-test_year,train_days,test_days,context_first_day,context_last_day,load_s,median forecast min (%),median forecast max (%),inside 10-90% band (%),band width mean (%),band vs VIX (corr)
-2024,753,252,753,1004,1.78,-0.1131,0.1323,75.4,1.784,0.691
-2025,1005,250,1005,1254,2.37,-0.2714,0.2941,77.2,2.036,0.735
-2026,1255,180,1255,1434,1.9,-0.0408,0.1684,76.1,1.752,0.473
+test_year,train_days,test_days,median forecast min (%),median forecast max (%),inside 10-90% band (%),band width mean (%),band vs VIX (corr)
+2024,753,252,-0.1614,0.1812,71.8,1.692,0.753
+2025,1005,250,-0.2847,0.3108,77.2,2.032,0.764
+2026,1255,180,-0.0484,0.241,72.2,1.633,0.436

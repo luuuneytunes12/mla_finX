@@ -1,0 +1,4 @@
+test_year,train_days,fit_examples,val_examples,steps_run,best_step,val_loss_as_is,val_loss_kept,val loss change (%),train_s,device
+2024,753,549,76,250,50,0.42614,0.42213,-0.94,54.3,cuda
+2025,1005,776,101,200,0,0.46013,0.46013,0.0,51.6,cuda
+2026,1255,1001,126,325,125,0.37627,0.37223,-1.07,94.3,cuda

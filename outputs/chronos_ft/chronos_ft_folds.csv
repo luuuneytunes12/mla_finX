@@ -1,0 +1,4 @@
+test_year,train_days,test_days,median forecast min (%),median forecast max (%),inside 10-90% band (%),band width mean (%),band vs VIX (corr)
+2024,753,252,-0.0494,0.2498,80.6,1.973,0.749
+2025,1005,250,-0.2847,0.3108,77.2,2.032,0.764
+2026,1255,180,-0.0275,0.2038,71.7,1.64,0.58
