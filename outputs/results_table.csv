@@ -5,6 +5,7 @@ ARIMA,Baseline,0.9639,0.6547,54.1056,0.2278,1.4628,2.5325
 SARIMA,Traditional ML,0.9636,0.6541,56.0117,0.2596,10.8637,5.5383
 XGBoost,Traditional ML,0.9624,0.6548,54.9853,0.3874,0.0921,12.8404
 DNN,Deep learning,1.0237,0.7315,52.346,-5.9593,7.1478,33.2765
+LSTM,Deep learning,0.9932,0.6846,50.7331,-2.8026,6.5917,145.2325
 Chronos-Bolt (as-is),LLM / foundation,0.9676,0.6563,55.8651,-0.1511,1.7801,75.2529
 Chronos-Bolt (fine-tuned),LLM / foundation,0.9683,0.6574,54.8387,-0.2291,66.7283,64.0791
 Always up (direction benchmark),Benchmark,,,56.0117,,,

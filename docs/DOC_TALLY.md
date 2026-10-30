@@ -1,18 +1,19 @@
 # Where each rule of `docs/1. Overview.pdf` lives in code
 
-| Overview rule | Code |
-|---|---|
-| 58 inputs, target = next-day return | `src/build_master.py::build`, `config.py::TARGET` |
-| 7 data checks | `src/build_master.py::run_checks` |
-| Top 50 by Dec-2024 weight, Alphabet once | `config.py::TICKER_WEIGHTS`, `pick_top50` |
-| 3 expanding folds, pooled scoring | `config.py::FOLDS`, `finx_common.walk_forward`, `make_results` |
-| Window = 5 days (290 flat / 5×58) | `make_window`, `make_window_3d` |
-| 10% validation slice | `val_split`, `config.py::VAL_FRACTION` |
-| Naive / MA(5) / ARIMA AIC search | `src/baselines.py` |
-| XGBoost settings | `models/xgboost_model.py` |
-| SARIMA settings, AIC vs ARIMA | `models/sarima_model.py`, `notebooks/model_sarima.ipynb` |
-| DNN settings | `models/dnn_model.py` |
-| Chronos-Bolt as-is (ret_index only, full history, median) | `models/chronos_model.py`, `notebooks/model_chronos.ipynb` |
+| Overview rule                                                                      | Code                                                             |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| 58 inputs, target = next-day return                                                | `src/build_master.py::build`, `config.py::TARGET`                |
+| 7 data checks                                                                      | `src/build_master.py::run_checks`                                |
+| Top 50 by Dec-2024 weight, Alphabet once                                           | `config.py::TICKER_WEIGHTS`, `pick_top50`                        |
+| 3 expanding folds, pooled scoring                                                  | `config.py::FOLDS`, `finx_common.walk_forward`, `make_results`   |
+| Window = 5 days (290 flat / 5×58)                                                  | `make_window`, `make_window_3d`                                  |
+| 10% validation slice                                                               | `val_split`, `config.py::VAL_FRACTION`                           |
+| Naive / MA(5) / ARIMA AIC search                                                   | `src/baselines.py`                                               |
+| XGBoost settings                                                                   | `models/xgboost_model.py`                                        |
+| SARIMA settings, AIC vs ARIMA                                                      | `models/sarima_model.py`, `notebooks/model_sarima.ipynb`         |
+| DNN settings                                                                       | `models/dnn_model.py`                                            |
+| LSTM settings                                                                      | `models/lstm_model.py`                                           |
+| Chronos-Bolt as-is (ret_index only, full history, median)                          | `models/chronos_model.py`, `notebooks/model_chronos.ipynb`       |
 | Chronos-Bolt fine-tuned (per-fold fine-tune, 10% validation slice, early stopping) | `models/chronos_ft_model.py`, `notebooks/model_chronos_ft.ipynb` |
-| Train time + latency for every model | `walk_forward` timing json |
-| Calm vs stressed (VIX 20), Table A, Table B | `src/make_results.py` |
+| Train time + latency for every model                                               | `walk_forward` timing json                                       |
+| Calm vs stressed (VIX 20), Table A, Table B                                        | `src/make_results.py`                                            |
